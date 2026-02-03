@@ -1,4 +1,19 @@
 {
+  
+  "expo": {
+    "name": "NEW-MINIPROJECT",
+    "slug": "NEW-MINIPROJECT",
+    "version": "1.0.0",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "อนุญาตให้แอปเข้าถึงรูปภาพเพื่อใช้ในการโพสต์"
+        }
+      ]
+    ]
+  },
+
   "expo": {
     "name": "miniproject-31",
     "slug": "miniproject-31",
