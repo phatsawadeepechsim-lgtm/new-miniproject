@@ -4,9 +4,7 @@ import { Link } from 'expo-router';
 
 // รายชื่อเพื่อนสมมติ
 const CONTACTS = [
-  { id: '1', name: 'Gemini AI', last: 'สวัสดีจ้า! มีอะไรให้ช่วยไหม?' },
-  { id: '2', name: 'Threads Developer', last: 'โค้ดหน้าแชทเสร็จเรียบร้อยแล้วนะ' },
-  { id: '3', name: 'React Native', last: 'ส่งข้อความและลบได้จริงแล้วครับ' }
+  { id: '1', name: 'Gemini AI', last: 'สวัสดีจ้า! มีอะไรให้ช่วยไหม?' }
 ];
 
 export default function MessagesList() {

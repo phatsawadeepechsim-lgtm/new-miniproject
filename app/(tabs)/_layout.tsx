@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tabs } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 
@@ -11,6 +12,15 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <FontAwesome6 name="house" size={24} color={color} />,
         }}
       />
+      
+      <Tabs.Screen
+        name="create"  // ต้องตรงกับชื่อไฟล์ create.tsx
+        options={{
+          title: 'สร้างโพสต์',
+          tabBarIcon: ({ color }) => <FontAwesome6 name="plus-square" size={24} color={color} />,
+        }}
+      />
+
       <Tabs.Screen
         name="messages"
         options={{
@@ -18,13 +28,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <FontAwesome6 name="comment-dots" size={24} color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="create"
-        options={{
-          title: 'เพิ่มโพสต์',
-          tabBarIcon: ({ color }) => <FontAwesome6 name="square-plus" size={24} color={color} />,
-        }}
-      />
+
       <Tabs.Screen
         name="notifications"
         options={{
@@ -32,6 +36,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <FontAwesome6 name="heart" size={24} color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
