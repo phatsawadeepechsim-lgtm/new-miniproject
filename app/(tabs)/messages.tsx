@@ -1,50 +1,42 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import { FontAwesome6 } from '@expo/vector-icons';
+import React from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Link } from 'expo-router';
 
-export default function MessagesScreen() {
-  const [selectedChat, setSelectedChat] = useState<any>(null);
-  const [msg, setMsg] = useState('');
+// รายชื่อเพื่อนสมมติ
+const CONTACTS = [
+  { id: '1', name: 'Gemini AI', last: 'สวัสดีจ้า! มีอะไรให้ช่วยไหม?' },
+  { id: '2', name: 'Threads Developer', last: 'โค้ดหน้าแชทเสร็จเรียบร้อยแล้วนะ' },
+  { id: '3', name: 'React Native', last: 'ส่งข้อความและลบได้จริงแล้วครับ' }
+];
 
-  if (selectedChat) {
-    return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <View style={styles.chatHeader}>
-          <TouchableOpacity onPress={() => setSelectedChat(null)}>
-            <FontAwesome6 name="chevron-left" size={20} />
-          </TouchableOpacity>
-          <Text style={styles.headerName}>{selectedChat.name}</Text>
-        </View>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: '#999' }}>เริ่มการสนทนากับ {selectedChat.name}</Text>
-        </View>
-        <View style={styles.inputArea}>
-          <TextInput 
-            style={styles.chatInput} 
-            placeholder="ส่งข้อความ..." 
-            value={msg}
-            onChangeText={setMsg}
-          />
-          <TouchableOpacity onPress={() => setMsg('')}>
-            <FontAwesome6 name="paper-plane" size={20} color="#0095f6" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-
+export default function MessagesList() {
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Messages</Text>
+      </View>
+
       <FlatList
-        data={[{ id: '1', name: 'Gemini', lastMsg: 'สวัสดีครับ!' }]}
+        data={CONTACTS}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={() => setSelectedChat(item)}>
-            <View style={styles.avatar} />
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
-              <Text style={{ color: '#666' }}>{item.lastMsg}</Text>
-            </View>
-          </TouchableOpacity>
+          /* สำคัญมาก: ตรง href ต้องใช้เครื่องหมาย Backtick ` (อยู่ใต้ปุ่ม Esc) 
+             เพื่อให้ TypeScript และ Expo Router เข้าใจตัวแปร ${item.id} ครับ
+          */
+          <Link href={`/chat/${item.id}?name=${item.name}`} asChild>
+            <TouchableOpacity style={styles.row}>
+              <View style={styles.avatarPlaceholder} />
+              <View style={styles.content}>
+                <View style={styles.nameRow}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.time}>10:30 AM</Text>
+                </View>
+                <Text style={styles.lastMsg} numberOfLines={1}>
+                  {item.last}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Link>
         )}
       />
     </View>
@@ -52,10 +44,26 @@ export default function MessagesScreen() {
 }
 
 const styles = StyleSheet.create({
-  item: { flexDirection: 'row', padding: 15, borderBottomWidth: 0.5, borderColor: '#eee', alignItems: 'center' },
-  avatar: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#eee', marginRight: 15 },
-  chatHeader: { flexDirection: 'row', alignItems: 'center', padding: 20, borderBottomWidth: 0.5, borderColor: '#eee', paddingTop: 50 },
-  headerName: { fontSize: 18, fontWeight: 'bold', marginLeft: 20 },
-  inputArea: { flexDirection: 'row', padding: 15, alignItems: 'center', borderTopWidth: 0.5, borderColor: '#eee' },
-  chatInput: { flex: 1, backgroundColor: '#f0f0f0', borderRadius: 20, paddingHorizontal: 15, paddingVertical: 8, marginRight: 10 }
+  container: { flex: 1, backgroundColor: 'white' },
+  header: { padding: 20, borderBottomWidth: 0.5, borderColor: '#eee' },
+  title: { fontSize: 24, fontWeight: 'bold' },
+  row: { 
+    flexDirection: 'row', 
+    padding: 15, 
+    alignItems: 'center', 
+    borderBottomWidth: 0.5, 
+    borderColor: '#f0f0f0' 
+  },
+  avatarPlaceholder: { 
+    width: 55, 
+    height: 55, 
+    borderRadius: 27.5, 
+    backgroundColor: '#f5f5f5', 
+    marginRight: 15 
+  },
+  content: { flex: 1 },
+  nameRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  name: { fontWeight: 'bold', fontSize: 16 },
+  time: { color: '#999', fontSize: 12 },
+  lastMsg: { color: '#666', fontSize: 14 }
 });

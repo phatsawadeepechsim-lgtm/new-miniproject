@@ -1,11 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export interface Comment {
+  id: string;
+  text: string;
+  userName: string;
+}
+
 export interface Post {
   id: string;
   text: string;
   image?: string;
   likes: number;
   isLiked: boolean;
+  comments: Comment[]; // บรรทัดนี้สำคัญมาก ห้ามหาย!
   createdAt: number;
 }
 
@@ -22,17 +29,16 @@ export const usePosts = () => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify([newPost, ...posts]));
   };
 
-  const updatePosts = async (updatedPosts: Post[]) => {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPosts));
+  const updatePosts = async (updated: Post[]) => {
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   };
 
-  // เพิ่มฟังก์ชันลบโพสต์ตรงนี้ครับ
   const deletePost = async (id: string) => {
     const posts = await getPosts();
-    const filteredPosts = posts.filter(p => p.id !== id);
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filteredPosts));
-    return filteredPosts; 
+    const filtered = posts.filter(p => p.id !== id);
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+    return filtered;
   };
 
-  return { getPosts, savePost, updatePosts, deletePost }; // ต้องส่งออกไปให้หน้าอื่นใช้ด้วย
+  return { getPosts, savePost, updatePosts, deletePost };
 };
